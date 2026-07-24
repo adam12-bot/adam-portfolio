@@ -1002,6 +1002,7 @@
             const gallery = document.getElementById('all-projects-view');
             gallery.classList.add('active');
             document.body.style.overflow = 'hidden'; // prevent background scroll
+            document.documentElement.style.overflow = 'hidden';
         }
 
         function closeAllProjects() {
@@ -1011,6 +1012,7 @@
             setTimeout(() => {
                 gallery.classList.remove('active');
                 document.body.style.overflow = ''; // restore background scroll
+                document.documentElement.style.overflow = '';
             }, 400); // Wait for transition
         }
 
@@ -1562,12 +1564,14 @@
             lightboxCaption.textContent = img.alt;
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
         }
 
         function closeLightbox() {
             const lightbox = document.getElementById('lightbox');
             lightbox.classList.remove('active');
             document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
         }
 
         document.addEventListener('keydown', (e) => {

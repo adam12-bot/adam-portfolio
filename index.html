@@ -959,23 +959,23 @@
         </div>
     </div>
     <!-- Music: paling atas agar langsung load & play tanpa delay -->
-    <audio id="bg-music" loop preload="auto" style="visibility:hidden; position:absolute; width:0; height:0;">
-        <source src="music/duvet-instrumental.mp3" type="audio/mpeg">
-    </audio>
     <script>
         // Entrance Script
         (function(){
-            var a = document.getElementById('bg-music');
+            // Create audio dynamically to bypass strict mobile DOM media blocking
+            var a = new Audio('music/duvet-instrumental.mp3');
+            a.loop = true;
             a.volume = 0.6;
+            
             var welcome = document.getElementById('welcome-screen');
             var entered = false;
 
-            function enterSite() {
+            function enterSite(e) {
                 if(entered) return;
                 entered = true;
                 
                 // Play audio
-                a.play().catch(e => console.log("Audio play failed:", e));
+                a.play().catch(err => console.log("Audio play failed:", err));
                 
                 // Animate out welcome screen
                 document.body.classList.add('entered');

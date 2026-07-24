@@ -1497,14 +1497,14 @@
             </div>
 
             <h2 class="font-headline-lg-mobile text-on-background tracking-tight pt-12 mb-8 text-center text-headline-lg">Animation</h2>
-            <div class="grid grid-cols-2 gap-4 w-full">
-                <!-- Slot 10 (Animation) -->
-                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group scroll-pop" onclick="openLightbox(this)">
-                    <div class="gallery-image-container relative w-full h-full overflow-hidden rounded-3xl bg-black">
+            <div class="w-full max-w-lg mx-auto">
+                <!-- Slot 10 (Animation Video) -->
+                <div class="glass-card rounded-3xl aspect-[16/9] md:aspect-video cursor-pointer group scroll-pop" onclick="openLightbox(this)">
+                    <div class="gallery-image-container relative w-full h-full overflow-hidden rounded-3xl bg-black shadow-lg">
                         <video class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" autoplay loop muted playsinline aria-label="Logo Animation">
                             <source src="./picture/logo.mp4" type="video/mp4">
                         </video>
-                        <div class="gallery-overlay"><span class="material-symbols-outlined text-white text-3xl drop-shadow-md">play_circle</span></div>
+                        <div class="gallery-overlay"><span class="material-symbols-outlined text-white text-5xl drop-shadow-md">play_circle</span></div>
                     </div>
                 </div>
             </div>

@@ -875,17 +875,7 @@
                 padding: 10px 14px;
             }
         }
-        /* Card Entrance Transition (Gallery) */
-        #all-projects-view .glass-card {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        body.entered-gallery #all-projects-view .glass-card {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        /* Removed custom Card Entrance Transition (Gallery) in favor of global scroll-pop */
 
         .gallery-overlay {
             position: absolute;
@@ -1012,29 +1002,11 @@
             const gallery = document.getElementById('all-projects-view');
             gallery.classList.add('active');
             document.body.style.overflow = 'hidden'; // prevent background scroll
-            
-            // Set staggered transition delays for gallery cards
-            document.querySelectorAll('#all-projects-view .glass-card').forEach((card, index) => {
-                card.style.transitionDelay = (index * 0.05) + 's';
-            });
-
-            // Small delay to ensure display is applied before class
-            setTimeout(() => {
-                document.body.classList.add('entered-gallery');
-            }, 50);
         }
 
         function closeAllProjects() {
             const gallery = document.getElementById('all-projects-view');
             
-            // Reverse transition delays for exiting smoothly
-            const cards = document.querySelectorAll('#all-projects-view .glass-card');
-            cards.forEach((card, index) => {
-                card.style.transitionDelay = ((cards.length - 1 - index) * 0.02) + 's';
-            });
-            
-            document.body.classList.remove('entered-gallery'); 
-
             // Wait for cards to slide down before hiding the gallery completely
             setTimeout(() => {
                 gallery.classList.remove('active');
@@ -1414,42 +1386,42 @@
             <h2 class="font-headline-lg-mobile text-on-background tracking-tight mb-8 text-center text-headline-lg">Photography</h2>
             <div class="grid grid-cols-2 gap-4 w-full">
                 <!-- Slot 1 -->
-                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group" onclick="openLightbox(this)">
+                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group scroll-pop" onclick="openLightbox(this)">
                     <div class="gallery-image-container relative w-full h-full overflow-hidden rounded-3xl">
                         <img alt="Minimalist architecture" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCU7qVoHf19CbkJh2F3mngc9eRBb-YcbVzdSk4J0SmBAjArEIhBLQDMIEe0XBn6CL97IEpHSLaAiCVYkoP-caF8TRiOf5CLYkcA9G9_Cy-ywsOjm0ViDFK-D6Ay0uelepOdPtFBlGdUsTUTGOFcq6db-jwzOI-jMbXJnBJl2tpCHn_DjuxSTE9lGOGKsIvvPIWapRfTeyPXpKyLF3l7l2EWSeBVhwc_luCUYiRNqifFgGr71VKyT-BV5H26DBE2IdLOioRIHmeErGElrw">
                         <div class="gallery-overlay"><span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span></div>
                     </div>
                 </div>
                 <!-- Slot 2 -->
-                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group" onclick="openLightbox(this)">
+                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group scroll-pop" onclick="openLightbox(this)">
                     <div class="gallery-image-container relative w-full h-full overflow-hidden rounded-3xl">
                         <img alt="Tropical palm leaves" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhy4VS1OsmqC7LjghSvKhVtJiwBuUNpDUBhDd0T3wp5W9kZzff_0Jd-RO_qwuu_8f9CwtsDLZXs533xDMU2Eu-SJJRTsUusvMbEkszr3bksgx-8XjyDhfUsdzNbULo5U9xTlQl2GCexF9B0DCIqOb-vLjBg0HP7ntucOKdgRhXzSBVfL_9MXdx02Vm3HM2bbEKH63oW6kmd32UOvJR30o_1DqkI1_fGIusfeSfP8-8CAhGblSpKyG1UsclUE7J45jQh4qgdTUoJLi_2Q">
                         <div class="gallery-overlay"><span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span></div>
                     </div>
                 </div>
                 <!-- Slot 3 -->
-                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group" onclick="openLightbox(this)">
+                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group scroll-pop" onclick="openLightbox(this)">
                     <div class="gallery-image-container relative w-full h-full overflow-hidden rounded-3xl">
                         <img alt="Modern interior design" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL_u0s0j6f-N_fkEA0aByvALCcd8-lhoOuz2o0zF1RD4PgHuVYb3RzgVxqm-Nrfj8OFmUx_6lWg47rF08h5BHUyPeyRsoPEZ7MEYShpUNe0Nr9JUMS8ZNVM8L5cFQsAMkcDsbRuua_mHORlQ1r5gDAND7_D1db7SBWhzhpBFo0TXvMmVurjptk0pQuQRkxUue5tBoIdpnZBiUmx9TtGuYIcF-WleZF6nhCwi1xdhHdQ5TLJac9CqtAia4yieiUly63n8oMnsUA3UJTNw">
                         <div class="gallery-overlay"><span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span></div>
                     </div>
                 </div>
                 <!-- Slot 4 -->
-                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group" onclick="openLightbox(this)">
+                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group scroll-pop" onclick="openLightbox(this)">
                     <div class="gallery-image-container relative w-full h-full overflow-hidden rounded-3xl">
                         <img alt="Abstract neon lights" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcg7nZME4zGlTJysYa-ZurnsMkKZsh2JBwnaF--IokPyBir0BBCTEQib0cmIhh_r1gpYQhasdKsTVO5mDTW8SG2j-l32_3oY2i9vbVldbI5s7RU7aajPhYZme5jpBLDYum8PNr-hyRm2c9Kruoanu6BBUxnFPQc77Gtp1zKBERHCA-4KWgyPgmxDgUSjBXvVV9pT-f_3mhir36xEbMN6IXHQCWUltgMf1h6DpVFby9hFfHsKNOptFPBhZ-pgwBfwUx9brW1GVuj2CphQ">
                         <div class="gallery-overlay"><span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span></div>
                     </div>
                 </div>
                 <!-- Slot 5 -->
-                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group" onclick="openLightbox(this)">
+                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group scroll-pop" onclick="openLightbox(this)">
                     <div class="gallery-image-container relative w-full h-full overflow-hidden rounded-3xl">
                         <img alt="Calm ocean waves" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgYRBOjJvW4-aWNkq77U957ODmlaPEDLFYdE3gQqgabAu-zvjFKHSiaaTiarukn4ieQFpKgT7z_ZbITOajEYc0cIHkaK29w7_-zrkFiO9N3hjbGssL3wTKBGRaH--Mo61ZLS_hWktTq35HRgXOLrUyT9HlLcaAs3-C7ADFjntxX-Y-BuXNYD9ZSHwxCJY0nnDBV9e0owfqYy1G5tdmBBNCAC5giTEfmwu2Kj04gmnXjc72IIwlHIIhZbkakh6Kh2o8kbWNPnqBonmdYA">
                         <div class="gallery-overlay"><span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span></div>
                     </div>
                 </div>
                 <!-- Slot 6 -->
-                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group" onclick="openLightbox(this)">
+                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group scroll-pop" onclick="openLightbox(this)">
                     <div class="gallery-image-container relative w-full h-full overflow-hidden rounded-3xl">
                         <img alt="Mountain landscape" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPQhQiSO5d1QR74kKh3NJk8OjFwk_DJc5SiKWykBmyLWaY2ZBOp43g1p4CQwMoX7h997ljR_7bkqg2S-mJvSLtD6eR0AxGXmJr2B4i7gGnPvlYsJ-pDHpDo16Q52RrZ6l9GXhvq_6P2IV4I6lRtdjxWruLeH4bEbYarz83sQ_8FRqnSEZ6C01QYV-8L9fgx6y5FLOSaBX3UQ7G5iQQPfvF6YG2PRrAxUBwUWsJjHmQ7EeGqEgfXekoz75FRyYwz77RcdlJ-bTdg6HsrA">
                         <div class="gallery-overlay"><span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span></div>
@@ -1460,21 +1432,21 @@
             <h2 class="font-headline-lg-mobile text-on-background tracking-tight pt-12 mb-8 text-center text-headline-lg">Design</h2>
             <div class="grid grid-cols-2 gap-4 w-full">
                 <!-- Slot 7 -->
-                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group" onclick="openLightbox(this)">
+                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group scroll-pop" onclick="openLightbox(this)">
                     <div class="gallery-image-container relative w-full h-full overflow-hidden rounded-3xl">
                         <img alt="Scandinavian living room" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSsFOgTLW0pPy10IUgCMdORSkxq4KbK9Fl_1h_RHdIH4Cpo3zkbbm9RcczYHX_0iqa6Y_aUG63keqKaa8tPmvX1zzcCbWTMdXMofYHr-lJsIMEdagZhXBov2wSe0XT_1x0F5nmX1WX7loRSyRS6M31lU92GxXRFv13vshldUPnBI1-SVAhIV5PXfipzbT2vi7AH5YKc6-v__3-3VGVFyRZp813X8l1fvS_JrBBjAwUotyEqlU37ox3Z4OfzLnkMPudSKialhKy9w4Bhw">
                         <div class="gallery-overlay"><span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span></div>
                     </div>
                 </div>
                 <!-- Slot 8 -->
-                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group" onclick="openLightbox(this)">
+                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group scroll-pop" onclick="openLightbox(this)">
                     <div class="gallery-image-container relative w-full h-full overflow-hidden rounded-3xl">
                         <img alt="High-tech watch" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOwHtkovPfokHPpj7jSLJoC3qpvTQfhzpxZEVmTDd0_SzHHZX_-nePJWQu42iTO2yBu4PmsSlzwg0NywjtwUAo-yff50gxwLFoDqQCof5ECBaqYY5wauJ-baDDrSn0ctK5GDhPRxJICrY5_iWbG2ounwEzbkcoyeYej8hvZgx6Ur10v-ruEGh2TUoLQbF88dH_qoZj225J3ZmsIHRTxpH7NcPfUvbsGc9S1vEvTDqIPNEFCJovvR1KeACAq-6zuUCmYDhRft2vizZh6Q">
                         <div class="gallery-overlay"><span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span></div>
                     </div>
                 </div>
                 <!-- Slot 9 -->
-                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group" onclick="openLightbox(this)">
+                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group scroll-pop" onclick="openLightbox(this)">
                     <div class="gallery-image-container relative w-full h-full overflow-hidden rounded-3xl">
                         <img alt="Turquoise ocean waves" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDx3_9ON6nVhwORlPBGZfppCWjK4sO0N_wI7D7Hw0neiRNuGEfeA7CrFuMUAH8h52UDWPCTEuNotNhoPOrVESCgsC1NO7UwcU32dlpVkL2px0J3ExyI2epry1nZhRmnMcnXp0jN2n5tmjEKKOh1vqiMYZwFHfaERWW4t203gWseP4BsC6Z3f84MnuYgCIv_HDS4xlrAnr0d0pDPhF3rYYDfKrdmRIH5AnWIs8nUPdPSB588uy1fuaMxRaeC0wvj3wd0LZPEhMww_aKnbQ">
                         <div class="gallery-overlay"><span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span></div>

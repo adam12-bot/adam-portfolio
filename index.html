@@ -916,6 +916,29 @@
             opacity: 1;
             visibility: visible;
         }
+
+        /* ======= MOBILE PERFORMANCE OPTIMIZATION ======= */
+        @media (max-width: 768px) {
+            /* Disable heavy orb animations but keep gradient */
+            .opal-orb {
+                animation: none !important;
+                filter: blur(40px) !important; /* Reduced blur */
+            }
+            .opal-bg-container {
+                animation: none !important;
+            }
+            
+            /* Reduce backdrop-filter glassmorphism cost */
+            .glass-card, .glass-section-bg, #all-projects-view {
+                backdrop-filter: blur(8px) !important;
+                -webkit-backdrop-filter: blur(8px) !important;
+            }
+            
+            /* Simplify scroll animations (remove blur transitions) */
+            .scroll-rise, .scroll-pop, .scroll-left, .scroll-right, .scroll-flip, .scroll-zoom {
+                filter: none !important;
+            }
+        }
     </style>
 </head>
 <body class="antialiased flex flex-col min-h-screen text-on-surface" style="overflow: hidden;">

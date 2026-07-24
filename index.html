@@ -904,6 +904,8 @@
             -webkit-backdrop-filter: blur(20px);
             overflow-y: auto;
             overflow-x: hidden;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
             transform: translateY(100%);
             opacity: 0;
             transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.6s ease;
@@ -997,12 +999,34 @@
             a.addEventListener('ended', function(){ a.currentTime=0; a.play(); });
         })();
 
+        // Global Scroll Lock for Modals
+        let scrollLockCount = 0;
+        let scrollPosition = 0;
+        
+        function lockScroll() {
+            scrollLockCount++;
+            if (scrollLockCount > 1) return;
+            scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollPosition}px`;
+            document.body.style.width = '100%';
+        }
+        
+        function unlockScroll() {
+            scrollLockCount--;
+            if (scrollLockCount > 0) return;
+            scrollLockCount = 0; // fallback
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+            window.scrollTo(0, scrollPosition);
+        }
+
         // Gallery SPA Navigation
         function openAllProjects() {
             const gallery = document.getElementById('all-projects-view');
             gallery.classList.add('active');
-            document.body.style.overflow = 'hidden'; // prevent background scroll
-            document.documentElement.style.overflow = 'hidden';
+            lockScroll();
         }
 
         function closeAllProjects() {
@@ -1011,13 +1035,11 @@
             // Wait for cards to slide down before hiding the gallery completely
             setTimeout(() => {
                 gallery.classList.remove('active');
-                document.body.style.overflow = ''; // restore background scroll
-                document.documentElement.style.overflow = '';
+                unlockScroll();
             }, 400); // Wait for transition
         }
 
         // Scroll Observer (early, for elements above the fold)
-        const scrollClasses = '.scroll-rise, .scroll-pop, .scroll-left, .scroll-right, .scroll-flip, .scroll-zoom';
         const earlyObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1029,7 +1051,24 @@
         }, { threshold: 0.1 });
 
         document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll(scrollClasses).forEach(el => earlyObserver.observe(el));
+            const allProjectsView = document.getElementById('all-projects-view');
+            const modalObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                    } else {
+                        entry.target.classList.remove('show');
+                    }
+                });
+            }, { root: allProjectsView, threshold: 0.1 });
+
+            // Main page animations
+            document.querySelectorAll('main .scroll-rise, main .scroll-pop, main .scroll-left, main .scroll-right, main .scroll-flip, main .scroll-zoom, footer .scroll-rise').forEach(el => earlyObserver.observe(el));
+            
+            // Modal page animations
+            if (allProjectsView) {
+                allProjectsView.querySelectorAll('.scroll-pop, .scroll-rise').forEach(el => modalObserver.observe(el));
+            }
         });
     </script>
 
@@ -1591,8 +1630,7 @@
             }
 
             lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            document.documentElement.style.overflow = 'hidden';
+            lockScroll();
         }
 
         function closeLightbox() {
@@ -1600,8 +1638,7 @@
             const lightboxVideo = document.getElementById('lightbox-video');
             lightbox.classList.remove('active');
             lightboxVideo.pause();
-            document.body.style.overflow = '';
-            document.documentElement.style.overflow = '';
+            unlockScroll();
         }
 
         document.addEventListener('keydown', (e) => {

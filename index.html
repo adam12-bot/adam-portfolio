@@ -1366,6 +1366,7 @@
             <span class="material-symbols-outlined" style="font-size:24px">close</span>
         </button>
         <img id="lightbox-img" class="lightbox-img" src="" alt="" onclick="event.stopPropagation()">
+        <video id="lightbox-video" class="lightbox-img" controls style="display: none;" onclick="event.stopPropagation()"></video>
         <div id="lightbox-caption" class="lightbox-caption"></div>
     </div>
 
@@ -1460,15 +1461,10 @@
             <div class="grid grid-cols-2 gap-4 w-full">
                 <!-- Slot 10 (Animation) -->
                 <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group scroll-pop" onclick="openLightbox(this)">
-                    <div class="gallery-image-container relative w-full h-full overflow-hidden rounded-3xl">
-                        <img alt="Animation Project 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL_u0s0j6f-N_fkEA0aByvALCcd8-lhoOuz2o0zF1RD4PgHuVYb3RzgVxqm-Nrfj8OFmUx_6lWg47rF08h5BHUyPeyRsoPEZ7MEYShpUNe0Nr9JUMS8ZNVM8L5cFQsAMkcDsbRuua_mHORlQ1r5gDAND7_D1db7SBWhzhpBFo0TXvMmVurjptk0pQuQRkxUue5tBoIdpnZBiUmx9TtGuYIcF-WleZF6nhCwi1xdhHdQ5TLJac9CqtAia4yieiUly63n8oMnsUA3UJTNw">
-                        <div class="gallery-overlay"><span class="material-symbols-outlined text-white text-3xl drop-shadow-md">play_circle</span></div>
-                    </div>
-                </div>
-                <!-- Slot 11 (Animation) -->
-                <div class="glass-card rounded-3xl aspect-[4/5] cursor-pointer group scroll-pop" onclick="openLightbox(this)">
-                    <div class="gallery-image-container relative w-full h-full overflow-hidden rounded-3xl">
-                        <img alt="Animation Project 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcg7nZME4zGlTJysYa-ZurnsMkKZsh2JBwnaF--IokPyBir0BBCTEQib0cmIhh_r1gpYQhasdKsTVO5mDTW8SG2j-l32_3oY2i9vbVldbI5s7RU7aajPhYZme5jpBLDYum8PNr-hyRm2c9Kruoanu6BBUxnFPQc77Gtp1zKBERHCA-4KWgyPgmxDgUSjBXvVV9pT-f_3mhir36xEbMN6IXHQCWUltgMf1h6DpVFby9hFfHsKNOptFPBhZ-pgwBfwUx9brW1GVuj2CphQ">
+                    <div class="gallery-image-container relative w-full h-full overflow-hidden rounded-3xl bg-black">
+                        <video class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" autoplay loop muted playsinline aria-label="Logo Animation">
+                            <source src="./picture/logo.mp4" type="video/mp4">
+                        </video>
                         <div class="gallery-overlay"><span class="material-symbols-outlined text-white text-3xl drop-shadow-md">play_circle</span></div>
                     </div>
                 </div>
@@ -1574,12 +1570,26 @@
         // === LIGHTBOX ===
         function openLightbox(wrapper) {
             const img = wrapper.querySelector('img');
+            const video = wrapper.querySelector('video');
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxVideo = document.getElementById('lightbox-video');
             const lightboxCaption = document.getElementById('lightbox-caption');
 
-            lightboxImg.src = img.src;
-            lightboxCaption.textContent = img.alt;
+            if (video) {
+                lightboxImg.style.display = 'none';
+                lightboxVideo.style.display = 'block';
+                lightboxVideo.src = video.querySelector('source') ? video.querySelector('source').src : video.src;
+                lightboxCaption.textContent = video.getAttribute('aria-label') || 'Video Animation';
+                lightboxVideo.play();
+            } else if (img) {
+                lightboxVideo.style.display = 'none';
+                lightboxVideo.pause();
+                lightboxImg.style.display = 'block';
+                lightboxImg.src = img.src;
+                lightboxCaption.textContent = img.alt;
+            }
+
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
             document.documentElement.style.overflow = 'hidden';
@@ -1587,7 +1597,9 @@
 
         function closeLightbox() {
             const lightbox = document.getElementById('lightbox');
+            const lightboxVideo = document.getElementById('lightbox-video');
             lightbox.classList.remove('active');
+            lightboxVideo.pause();
             document.body.style.overflow = '';
             document.documentElement.style.overflow = '';
         }

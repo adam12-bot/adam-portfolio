@@ -1027,6 +1027,16 @@
             const gallery = document.getElementById('all-projects-view');
             gallery.classList.add('active');
             lockScroll();
+            
+            // Force re-trigger animations in modal for iOS Safari
+            setTimeout(() => {
+                if (window.modalObserver) {
+                    gallery.querySelectorAll('.scroll-pop, .scroll-rise').forEach(el => {
+                        window.modalObserver.unobserve(el);
+                        window.modalObserver.observe(el);
+                    });
+                }
+            }, 600); // after slide-up transition
         }
 
         function closeAllProjects() {
@@ -1052,7 +1062,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const allProjectsView = document.getElementById('all-projects-view');
-            const modalObserver = new IntersectionObserver((entries) => {
+            window.modalObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('show');
@@ -1067,7 +1077,7 @@
             
             // Modal page animations
             if (allProjectsView) {
-                allProjectsView.querySelectorAll('.scroll-pop, .scroll-rise').forEach(el => modalObserver.observe(el));
+                allProjectsView.querySelectorAll('.scroll-pop, .scroll-rise').forEach(el => window.modalObserver.observe(el));
             }
         });
     </script>

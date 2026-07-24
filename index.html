@@ -1028,13 +1028,10 @@
             gallery.classList.add('active');
             lockScroll();
             
-            // Force all items to show automatically to bypass mobile browser intersection bugs in modals
+            // Trigger animation check once after the modal slides up
             setTimeout(() => {
-                gallery.querySelectorAll('.scroll-pop, .scroll-rise').forEach(el => {
-                    el.classList.add('show');
-                    if (window.modalObserver) window.modalObserver.unobserve(el);
-                });
-            }, 300); 
+                checkModalScroll();
+            }, 500); 
         }
 
         function closeAllProjects() {
@@ -1060,22 +1057,31 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const allProjectsView = document.getElementById('all-projects-view');
-            window.modalObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('show');
-                    } else {
-                        entry.target.classList.remove('show');
+            
+            // Bulletproof scroll animation for modal (bypasses Android/iOS IntersectionObserver bugs)
+            window.checkModalScroll = function() {
+                if (!allProjectsView.classList.contains('active')) return;
+                const items = allProjectsView.querySelectorAll('.scroll-pop, .scroll-rise');
+                const triggerBottom = window.innerHeight * 0.95;
+                
+                items.forEach(el => {
+                    const box = el.getBoundingClientRect();
+                    if (box.top < triggerBottom) {
+                        el.classList.add('show');
                     }
                 });
-            }, { root: allProjectsView, threshold: 0.1 });
+            };
+
+            if (allProjectsView) {
+                allProjectsView.addEventListener('scroll', window.checkModalScroll);
+            }
 
             // Main page animations
             document.querySelectorAll('main .scroll-rise, main .scroll-pop, main .scroll-left, main .scroll-right, main .scroll-flip, main .scroll-zoom, footer .scroll-rise').forEach(el => earlyObserver.observe(el));
             
-            // Modal page animations
+            // Initial check just in case
             if (allProjectsView) {
-                allProjectsView.querySelectorAll('.scroll-pop, .scroll-rise').forEach(el => window.modalObserver.observe(el));
+                window.checkModalScroll();
             }
         });
     </script>

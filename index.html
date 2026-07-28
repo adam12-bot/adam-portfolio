@@ -1079,10 +1079,30 @@
             // Main page animations
             document.querySelectorAll('main .scroll-rise, main .scroll-pop, main .scroll-left, main .scroll-right, main .scroll-flip, main .scroll-zoom, footer .scroll-rise').forEach(el => earlyObserver.observe(el));
             
-            // Initial check just in case
+            // Modal page animations
             if (allProjectsView) {
                 window.checkModalScroll();
             }
+
+            // Universal Smooth Scrolling & Prevent Default Jump
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') {
+                        e.preventDefault(); // Prevent jumping to top
+                        return;
+                    }
+                    
+                    const targetEl = document.querySelector(targetId);
+                    if (targetEl) {
+                        e.preventDefault();
+                        targetEl.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
         });
     </script>
 
@@ -1091,13 +1111,13 @@
 
     <!-- TopNavBar -->
     <header id="main-header" class="sticky top-0 z-50 flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto bg-surface/80 nav-backdrop border-b border-outline-variant/40">
-        <a id="nav-logo" class="font-headline-md text-headline-md text-primary font-bold tracking-tight hover:opacity-70 transition-opacity" href="#">Portfolio</a>
+        <a id="nav-logo" class="font-headline-md text-headline-md text-primary font-bold tracking-tight hover:opacity-70 transition-opacity" href="javascript:void(0)">Portfolio</a>
         <nav class="hidden md:flex gap-8 items-center">
             <a id="nav-portfolio" class="font-label-md text-label-md text-primary border-b-2 border-primary pb-1 transition-colors" href="#works">Portfolio</a>
             <a id="nav-about" class="font-label-md text-label-md text-secondary hover:text-primary transition-colors" href="#about">About</a>
             <a id="nav-contact" class="font-label-md text-label-md text-secondary hover:text-primary transition-colors" href="#contact">Contact</a>
         </nav>
-        <a id="nav-resume-btn" class="hidden md:inline-flex bg-surface-tint text-on-primary font-label-md text-label-md px-6 py-2 rounded-lg hover:opacity-80 transition-all hover:shadow-lg" href="#">Resume</a>
+        <a id="nav-resume-btn" class="hidden md:inline-flex bg-surface-tint text-on-primary font-label-md text-label-md px-6 py-2 rounded-lg hover:opacity-80 transition-all hover:shadow-lg" href="javascript:void(0)">Resume</a>
         <button id="mobile-menu-btn" class="md:hidden text-primary p-1 rounded-lg hover:bg-surface-variant transition-colors" onclick="toggleMobileNav()">
             <span class="material-symbols-outlined text-[28px]">menu</span>
         </button>
@@ -1115,7 +1135,7 @@
                 <a class="font-headline-md text-headline-md text-primary hover:text-surface-tint transition-colors" href="#about" onclick="toggleMobileNav()">About</a>
                 <a class="font-headline-md text-headline-md text-primary hover:text-surface-tint transition-colors" href="#contact" onclick="toggleMobileNav()">Contact</a>
             </nav>
-            <a class="mt-8 bg-surface-tint text-on-primary font-label-md text-label-md px-6 py-3 rounded-lg hover:opacity-80 transition-opacity text-center" href="#">Resume</a>
+            <a class="mt-8 bg-surface-tint text-on-primary font-label-md text-label-md px-6 py-3 rounded-lg hover:opacity-80 transition-opacity text-center" href="javascript:void(0)">Resume</a>
         </div>
     </div>
 
@@ -1396,7 +1416,7 @@
         <div class="px-margin-mobile md:px-margin-desktop py-12 max-w-container-max mx-auto">
             <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                 <div class="flex flex-col items-center md:items-start gap-2">
-                    <a class="font-headline-md text-headline-md text-primary font-bold tracking-tight" href="#">Portfolio</a>
+                    <a class="font-headline-md text-headline-md text-primary font-bold tracking-tight" href="javascript:void(0)">Portfolio</a>
                     <p class="font-body-md text-body-md text-secondary">© 2026 Adam Ilham. All rights reserved.</p>
                 </div>
                 <div class="flex gap-6 items-center">
